@@ -55,9 +55,9 @@ class Comment(models.Model):
     Represents a comments section
     """
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, required=True)
-    email = models.EmailField(max_length=254, required=True)
-    text = models.CharField(max_length=255, required=True)
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=254)
+    text = models.CharField(max_length=255)
     approved = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each save

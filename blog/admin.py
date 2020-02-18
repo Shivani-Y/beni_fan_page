@@ -24,8 +24,9 @@ class PostAdmin(admin.ModelAdmin):
         'status',
     )
     prepopulated_fields = {'slug': ('title',)}
-
-class CommnetAdmin(admin.ModelAdmin):
+# Register the `Post` model
+admin.site.register(models.Post, PostAdmin)
+class CommentAdmin(admin.ModelAdmin):
     """customising post model view"""
     list_display = (
         'name',
@@ -43,7 +44,6 @@ class CommnetAdmin(admin.ModelAdmin):
         'status',
     )
 
-# Register the `Post` model
-admin.site.register(models.Post, PostAdmin)
+
 # Register the `Comment` model
 admin.site.register(models.Comment, PostAdmin)
