@@ -26,18 +26,13 @@ class Post(models.Model):
     published = models.DateTimeField(
         null=True,
         blank=True,
-        help_text='The date & time this article was published',
-    )
-    slug = models.SlugField(
-        null=False,
-        help_text='The date & time this article was published',
-        unique_for_date='published',  # Slug is unique for publication date
+        help_text='The date & time this article was published'
     )
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
         default=DRAFT,
-        help_text='Set to "published" to make this post publicly visible',
+        help_text='Set to "published" to make this post publicly visible'
     )
 
     class Meta:

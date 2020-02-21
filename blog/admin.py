@@ -6,44 +6,22 @@ from . import models
 # Register the `Post` model
 class PostAdmin(admin.ModelAdmin):
     """customising post model view"""
-    list_display = (
-        'title',
-        'author',
-        'created',
-        'updated',
-    )
+    list_display = ('title', 'author', 'created', 'updated')
     #defining how to search on the page
-    search_fields = (
-        'title',
-        'author__username',
-        'author__first_name',
-        'author__last_name',
-    )
+    search_fields = ('title', 'author__username', 'author__first_name', 'author__last_name')
     #we can now filter on the basis of status all, draft or published
-    list_filter = (
-        'status',
-    )
-    prepopulated_fields = {'slug': ('title',)}
+    list_filter = (status)
+
+    def author(self, obj):#for list_display
+        return obj.author
+
+    def title(self, obj):#for list_display
+        return obj.title
+
+    def status(self, obj):
+        return obj.status
+
 # Register the `Post` model
 admin.site.register(models.Post, PostAdmin)
-class CommentAdmin(admin.ModelAdmin):
-    """customising post model view"""
-    list_display = (
-        'name',
-        'text',
-        'approved',
-        'created',
-        'updated',
-    )
-    #defining how to search on the page
-    search_fields = (
-        'text',
-    )
-    #we can now filter on the basis of
-    list_filter = (
-        'status',
-    )
-
-
 # Register the `Comment` model
 admin.site.register(models.Comment, PostAdmin)
