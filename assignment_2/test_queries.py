@@ -1,7 +1,6 @@
 import string
 
 from model_mommy import mommy
-from model_bakery import baker
 import pytest
 
 from blog.models import Comment, Post
@@ -13,8 +12,8 @@ pytestmark = pytest.mark.django_db
 
 
 def test_question_1_active_users(django_user_model):
-    baker.make(django_user_model, is_active=False)
-    active = baker.make(django_user_model, is_active=True)
+    mommy.make(django_user_model, is_active=False)
+    active = mommy.make(django_user_model, is_active=True)
     result = queries.question_1_return_active_users()
 
     assert list(result) == [active]
