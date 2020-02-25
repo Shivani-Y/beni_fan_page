@@ -9,10 +9,7 @@ class Post(models.Model):
     """
     DRAFT = 'draft'
     PUBLISHED = 'published'
-    STATUS_CHOICES = [
-        (DRAFT, 'Draft'),
-        (PUBLISHED, 'Published')
-    ]
+    STATUS_CHOICES = [(DRAFT, 'Draft'), (PUBLISHED, 'Published')]
     title = models.CharField(max_length=255)
     content = models.TextField()
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
@@ -29,10 +26,14 @@ class Post(models.Model):
         help_text='The date & time this article was published'
     )
     status = models.CharField(
-        max_length=10,
         choices=STATUS_CHOICES,
+        max_length=10,
         default=DRAFT,
         help_text='Set to "published" to make this post publicly visible'
+    )
+    slug = models.SlugField(
+        null=False,
+        unique_for_date='published',  # Slug is unique for publication date
     )
 
     class Meta:
@@ -50,12 +51,20 @@ class Comment(models.Model):
     Represents a comments section
     """
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    email = models.EmailField(max_length=254)
-    text = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=False)
+    email = models.EmailField(max_length=254, null=False)
+    text = models.CharField(max_length=255, null=False)
     approved = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each save
+
+    class Meta:
+        """sorting the posts in reverse"""
+        ordering = ['-created']
+
+    class CommentQuerySet(models.QuerySet):
+        def approved(self):
+            self.filter(approved=True)
 
     def __str__(self):
         return self.name
