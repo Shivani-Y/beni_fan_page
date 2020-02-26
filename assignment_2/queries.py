@@ -1,8 +1,11 @@
+"""
+Queries for assignment
+"""
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Count, Max
+from django.db.models import Q, Count
 from django.apps import apps
 from blog.models import Post, Comment
-
+# pylint: disable=C0103
 User = get_user_model()
 # pylint: disable=no-member
 def question_1_return_active_users():
@@ -46,7 +49,7 @@ def question_5_return_all_post_comments(post):
     Return all the comments made for the post provided in order
     of last created.
     """
-    result = Comment.objects.prefetch_related('post').order_by('-created')
+    result = Comment.objects.filter(post__title=post).order_by('-created')
     return result
 
 def question_6_get_approved_comments_from_queryset():
@@ -85,7 +88,7 @@ def question_9_create_a_comment(post):
     """
     Create and return a comment for the post object provided.
     """
-    result = ""
+    result = Post.objects.get(pk=post).create()
     return result
 
 def question_10_set_approved_to_false(comment):

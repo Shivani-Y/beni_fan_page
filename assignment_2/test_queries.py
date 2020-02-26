@@ -1,3 +1,6 @@
+"""
+Test for queries
+"""
 import string
 
 from model_mommy import mommy
