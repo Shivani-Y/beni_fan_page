@@ -1,6 +1,3 @@
-"""
-Queries for assignment
-"""
 from django.contrib.auth import get_user_model
 from django.db.models import Q, Count
 from django.apps import apps

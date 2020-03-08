@@ -9,7 +9,7 @@ import pytest
 from blog.models import Comment, Post
 from . import queries
 
-# pylint: disable=no-member
+#pylint: disable=no-member
 
 pytestmark = pytest.mark.django_db
 
@@ -105,7 +105,7 @@ def test_question_10_set_comment_approved_false():
 def test_question_11_delete_post_and_comments():
     post = mommy.make('blog.Post')
     mommy.make('blog.Comment', post=post, _quantity=2)
-    result = queries.question_11_delete_post_and_all_related_comments(post)
+    queries.question_11_delete_post_and_all_related_comments(post)
 
     assert Post.objects.exists() is False
     assert Comment.objects.exists() is False

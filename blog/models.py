@@ -3,6 +3,17 @@ from django.conf import settings  # Imports Django's loaded settings
 from django.db import models
 
 # Create your models here.
+class PostQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(status=self.model.PUBLISHED)
+
+    def drafts(self):
+        return self.filter(status=self.model.DRAFT)
+
+    def get_authors(self):
+        User = get_user_model()
+        # Get the users who are authors of this queryset
+        return User.objects.filter(blog_posts__in=self).distinct()
 class Post(models.Model):
     """
     Represents a blog post
