@@ -10,10 +10,6 @@ class PostQuerySet(models.QuerySet):
     def drafts(self):
         return self.filter(status=self.model.DRAFT)
 
-    def get_authors(self):
-        User = get_user_model()
-        # Get the users who are authors of this queryset
-        return User.objects.filter(blog_posts__in=self).distinct()
 class Post(models.Model):
     """
     Represents a blog post
@@ -46,6 +42,7 @@ class Post(models.Model):
         null=False,
         unique_for_date='published',  # Slug is unique for publication date
     )
+    objects = PostQuerySet.as_manager()
 
     class Meta:
         """sorting the posts in reverse"""
@@ -56,7 +53,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-
+class CommentQuerySet(models.QuerySet):
+    def approved(self):
+        self.filter(approved=True)
 class Comment(models.Model):
     """
     Represents a comments section
@@ -68,14 +67,12 @@ class Comment(models.Model):
     approved = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each save
-
+    objects = CommentQuerySet.as_manager()
     class Meta:
         """sorting the posts in reverse"""
         ordering = ['-created']
 
-    class CommentQuerySet(models.QuerySet):
-        def approved(self):
-            self.filter(approved=True)
+
 
     def __str__(self):
         return self.name
