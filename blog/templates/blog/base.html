@@ -27,10 +27,34 @@
   </nav>
 
   <main id="main-content">
-   {% block main %}
-   <!-- Content for the main block will be rendered here -->
-   {% endblock %}
+      <div>
+        {% block main %}
+        <!-- Content for the main block will be rendered here -->
+        {% endblock %}
+      </div>
+
+      <aside id="sidebar">
+        <section id="author-list">
+          <h3>Authors</h3>
+          <ul>
+            {% for author in authors %}
+              <li>{{ author.get_username }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+        <p>-------------------------------</p>
+        <section id="get-post">
+          <h3>Popular Post</h3>
+          <ul>
+            {% for post in get_posts %}
+              <li>{{ post.title }} ({{ post.comments__count }})</li>
+            {% endfor %}
+
+          </ul>
+        </section>
+      </aside>
   </main>
+<!-- .... ->
 
   <!-- The footer -->
   <footer id="site-footer">

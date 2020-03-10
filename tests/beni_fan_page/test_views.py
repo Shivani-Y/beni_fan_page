@@ -1,5 +1,7 @@
 """ test_views.py"""
 #from django.test.client import Client
+import pytest
+pytestmark = pytest.mark.django_db
 def test_index_ok(client):
     """ testing to get 200 server response"""
     # Make a GET request to / and store the response object

@@ -1,14 +1,33 @@
 """Creating models for the app"""
 from django.conf import settings  # Imports Django's loaded settings
 from django.db import models
-
+from django.contrib.auth import get_user_model
+from django.db.models import Count
 # Create your models here.
 class PostQuerySet(models.QuerySet):
+    """query set for post object"""
+
     def published(self):
+        """display only published post"""
         return self.filter(status=self.model.PUBLISHED)
 
     def drafts(self):
+        """display only draft post"""
         return self.filter(status=self.model.DRAFT)
+
+    def get_authors(self):
+        """Get the users who are authors of this queryset"""
+        User = get_user_model()
+        return User.objects.filter(blog_posts__in=self).distinct()
+
+    def return_10_post_with_the_most_comments(self):
+        """
+        Return the Post object containing the most comments. sorted by comment counts
+        """
+
+        one_result = self.filter(status=self.model.PUBLISHED)
+        result = one_result.values('title').annotate(Count('comments')).order_by('-comments__count')
+        return result
 
 class Post(models.Model):
     """
@@ -53,9 +72,13 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
 class CommentQuerySet(models.QuerySet):
     def approved(self):
         self.filter(approved=True)
+
+
+
 class Comment(models.Model):
     """
     Represents a comments section
