@@ -22,9 +22,8 @@ def test_get_authors_returns_users_who_have_authored_a_post(django_user_model):
 
 def test_question_post_with_most_comments():
     #create a post
-    post = mommy.make('blog.Post', title='test')
+    post = mommy.make('blog.Post', title='test', status='PUBLISHED')
     #create comments for the post
     mommy.make('blog.Comment', post=post, _quantity=3)
-    result = Post.objects.return_10_post_with_the_most_comments(post)
 
-    assert [{'title': "test", 'comments__count': 3}] == result
+    assert [{'title': "test", 'comments__count': 3}] == list(Post.objects.return_10_post_with_the_most_comments())

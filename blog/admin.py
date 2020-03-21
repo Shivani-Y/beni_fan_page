@@ -34,7 +34,10 @@ class PostAdmin(admin.ModelAdmin):
     #defining how to search on the page
     search_fields = ('title', 'author__username', 'author__first_name', 'author__last_name')
     #we can now filter on the basis of status all, draft or published
-    list_filter = ("status",) #admin.RelatedOnlyFieldListFilter
+    list_filter = (
+        'status',
+        'topics',
+    ) #admin.RelatedOnlyFieldListFilter
     prepopulated_fields = {'slug': ('title',)}
     inlines = [
         ExsistingCommentInline,
@@ -64,10 +67,15 @@ class CommentAdmin(admin.ModelAdmin):
         'approved',
     )
 
+class TopicAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+    )
+
 
 # Register the `Post` model
 admin.site.register(models.Post, PostAdmin)
 # Register the `Comment` model
 admin.site.register(models.Comment, CommentAdmin)
-
+admin.site.register(models.Topic, TopicAdmin)
 #admin.site.register(models.Comment, CommentInline)

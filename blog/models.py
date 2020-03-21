@@ -4,6 +4,33 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import Count
 # Create your models here.
+
+class TopicQuerySet(models.QuerySet):
+    """query set for topic object"""
+    def return_10_topics_with_the_most_post(self):
+        """
+        Return topics containing the most posts. sorted by comment counts
+        """
+        #all_topics = self.all() #filter(blog_posts__status='PUBLISHED')
+        result = self.values('name').filter(blog_posts__status='published').annotate(Count('blog_posts__title')).order_by('-blog_posts__title__count')
+        #annotate(Count('blog_posts__title'))
+
+        #result = published_post.values('topics').annotate(Count('title')).order_by('-title__count')
+        return result
+
+class Topic(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True  # No duplicates!
+    )
+    objects = TopicQuerySet.as_manager()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 class PostQuerySet(models.QuerySet):
     """query set for post object"""
 
@@ -24,7 +51,6 @@ class PostQuerySet(models.QuerySet):
         """
         Return the Post object containing the most comments. sorted by comment counts
         """
-
         one_result = self.filter(status=self.model.PUBLISHED)
         result = one_result.values('title').annotate(Count('comments')).order_by('-comments__count')
         return result
@@ -60,6 +86,10 @@ class Post(models.Model):
     slug = models.SlugField(
         null=False,
         unique_for_date='published',  # Slug is unique for publication date
+    )
+    topics = models.ManyToManyField(
+        Topic,
+        related_name='blog_posts'
     )
     objects = PostQuerySet.as_manager()
 

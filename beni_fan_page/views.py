@@ -1,4 +1,4 @@
-# bani_fan_page/views.py
+# bEni_fan_page/views.py
 """adding text to my bolg"""
 from django.http import HttpResponse
 
