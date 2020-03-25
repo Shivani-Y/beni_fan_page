@@ -70,7 +70,9 @@ class CommentAdmin(admin.ModelAdmin):
 class TopicAdmin(admin.ModelAdmin):
     list_display = (
         'name',
+        'slug',
     )
+    prepopulated_fields = {'slug': ('name',)}
 
 
 # Register the `Post` model

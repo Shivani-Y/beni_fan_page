@@ -1,0 +1,9 @@
+{# blog/templates/blog/topic_detail.html #}
+{% extends "blog/base.html" %}
+{% block page_title %}{{ topic }}{% endblock %}
+
+{% block main %}
+{% for topic in get_topic_posts %}
+<li>{{ topic }}</li>
+{% endfor %}
+{% endblock %}

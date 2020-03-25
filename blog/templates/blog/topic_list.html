@@ -1,0 +1,13 @@
+{# blog/templates/blog/topic_list.html #}
+{% extends "blog/base.html" %}
+
+{% block page_title %}Topics{% endblock %}
+
+{% block main %}
+<h1>Topics</h1>
+<ul>
+{% for topic in all_topics %}
+<li><a href="{{ topic.get_absolute_url }}">{{ topic }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

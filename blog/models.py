@@ -2,6 +2,7 @@
 from django.conf import settings  # Imports Django's loaded settings
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.db.models import Count
 # Create your models here.
 
@@ -12,10 +13,15 @@ class TopicQuerySet(models.QuerySet):
         Return topics containing the most posts. sorted by comment counts
         """
         #all_topics = self.all() #filter(blog_posts__status='PUBLISHED')
-        result = self.values('name').filter(blog_posts__status='published').annotate(Count('blog_posts__title')).order_by('-blog_posts__title__count')
-        #annotate(Count('blog_posts__title'))
+        result = self.values('name').filter(blog_posts__status='published')\
+        .annotate(Count('blog_posts__title')).order_by('-blog_posts__title__count')
+        return result
 
-        #result = published_post.values('topics').annotate(Count('title')).order_by('-title__count')
+    def return_post_in_topic(self):
+        """
+        Return all posts in a topic
+        """
+        result = self.values('blog_posts__pk').filter(blog_posts__status='published')
         return result
 
 class Topic(models.Model):
@@ -23,7 +29,16 @@ class Topic(models.Model):
         max_length=50,
         unique=True  # No duplicates!
     )
+    slug = models.SlugField(unique=True, null=False)
     objects = TopicQuerySet.as_manager()
+
+    def get_absolute_url(self):
+        return reverse(
+            'topics-detail',
+            kwargs={
+                'slug': self.slug
+            }
+        )
 
     def __str__(self):
         return self.name
@@ -93,6 +108,19 @@ class Post(models.Model):
     )
     objects = PostQuerySet.as_manager()
 
+    def get_absolute_url(self):
+        if self.published:
+            kwargs = {
+                'year': self.published.year,
+                'month': self.published.month,
+                'day': self.published.day,
+                'slug': self.slug
+            }
+        else:
+            kwargs = {'pk': self.pk}
+
+        return reverse('post-detail', kwargs=kwargs)
+
     class Meta:
         """sorting the posts in reverse"""
         # Sort by the `created` field. The `-` prefix
@@ -107,8 +135,6 @@ class CommentQuerySet(models.QuerySet):
     def approved(self):
         self.filter(approved=True)
 
-
-
 class Comment(models.Model):
     """
     Represents a comments section
@@ -121,11 +147,10 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each save
     objects = CommentQuerySet.as_manager()
+
     class Meta:
         """sorting the posts in reverse"""
         ordering = ['-created']
-
-
 
     def __str__(self):
         return self.name

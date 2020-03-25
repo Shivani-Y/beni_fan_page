@@ -27,3 +27,11 @@ def test_question_post_with_most_comments():
     mommy.make('blog.Comment', post=post, _quantity=3)
 
     assert [{'title': "test", 'comments__count': 3}] == list(Post.objects.return_10_post_with_the_most_comments())
+
+def test_get_absolute_url_for_post_with_published_date():
+    post = mommy.make(
+        'blog.Post',
+        published=dt.datetime(2014, 12, 20, tzinfo=dt.timezone.utc),
+        slug='model-instances',
+    )
+    assert post.get_absolute_url() == '/posts/2014/12/20/model-instances/'
