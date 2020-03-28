@@ -10,4 +10,4 @@ def base_context(request):
     get_topics = models.Topic.objects.return_10_topics_with_the_most_post()[:10]
 
 
-    return {'authors': authors,'get_topics': get_topics}
+    return {'authors': authors, 'get_topics': get_topics}

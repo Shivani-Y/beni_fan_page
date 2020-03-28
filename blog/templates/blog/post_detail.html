@@ -7,7 +7,7 @@
   <h1>{{ post.title }}</h1>
   <span class="published">Published <time>{{ post.published }}</time></span><br>
   <span class="author">by {{ post.author.get_username }}</span>
-
+  <section class="topics">by {{post.get_topics}}</section>
   <section class="content">{{ post.content|linebreaks }}</section>
 </article>
 {% endblock %}

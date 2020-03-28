@@ -48,7 +48,8 @@
           <h3>Popular Topics</h3>
           <ul>
             {% for topic in get_topics %}
-              <li>{{ topic.name }} ({{topic.blog_posts__title__count}})</li>
+              <li><a href="/topics/{{ topic.slug }}/">{{ topic.slug }} </a>
+                ({{topic.blog_posts__title__count}})</li>
             {% endfor %}
           </ul>
         </section>

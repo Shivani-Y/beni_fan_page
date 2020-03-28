@@ -46,7 +46,6 @@ urlpatterns = [
         views.TopicsDetailView.as_view(),
         name='topics-detail',
     ),
-
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('terms/', views.terms_and_conditions, name='terms-and-conditions'),
 ]

@@ -13,7 +13,7 @@ class TopicQuerySet(models.QuerySet):
         Return topics containing the most posts. sorted by comment counts
         """
         #all_topics = self.all() #filter(blog_posts__status='PUBLISHED')
-        result = self.values('name').filter(blog_posts__status='published')\
+        result = self.values('name', 'slug').filter(blog_posts__status='published')\
         .annotate(Count('blog_posts__title')).order_by('-blog_posts__title__count')
         return result
 
@@ -66,8 +66,8 @@ class PostQuerySet(models.QuerySet):
         """
         Return the Post object containing the most comments. sorted by comment counts
         """
-        one_result = self.filter(status=self.model.PUBLISHED)
-        result = one_result.values('title').annotate(Count('comments')).order_by('-comments__count')
+        #one_result = self.filter(status=self.model.PUBLISHED)
+        result = self.values('title').annotate(Count('comments')).order_by('-comments__count')
         return result
 
 class Post(models.Model):

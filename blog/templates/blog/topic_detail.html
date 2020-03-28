@@ -3,7 +3,7 @@
 
 
 {% block main %}
-<h1>Topic : {{all_topics.slug}}</h1>
+<h1> All Posts with Topic : {{all_topics.name}}</h1>
 <h2>{{all_topics.blog_posts__title}}</h2>
 {% for post in post_list %}
 {% include "blog/post_preview.html" %}
