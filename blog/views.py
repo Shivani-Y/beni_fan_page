@@ -74,16 +74,14 @@ class PostDetailView(DetailView):
 class TopicsListView(ListView):
     model = models.Topic
     context_object_name = 'all_topics'
-    #queryset = models.Topic.objects.return_post_in_topic()
-
+    #queryset = models.Topic.objects.values('slug')
 
 class TopicsDetailView(DetailView):
     model = models.Topic
-    #context_object_name = 'all_topics'
-    #queryset = models.Topic.objects.all()
-    def get_context_data(self, *args, **kwargs):
-        context = super(TopicsDetailView, self).get_context_data(*args, **kwargs)
-        post_set = self.get_object().blog_posts.all()
-        posts = (post_set).distinct()
-        context["posts"] = posts
+    context_object_name = 'all_topics'
+    #template_name = 'blog/topic_detail.html'
+    #queryset = models.Topic.objects.filter('slug')
+    def get_context_data(self, **kwargs):
+        context = super(TopicsDetailView, self).get_context_data(**kwargs)
+        context['post_list'] = models.Post.objects.filter(topics=self.get_object())
         return context
