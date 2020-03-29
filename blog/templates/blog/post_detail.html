@@ -7,7 +7,13 @@
   <h1>{{ post.title }}</h1>
   <span class="published">Published <time>{{ post.published }}</time></span><br>
   <span class="author">by {{ post.author.get_username }}</span>
-  <section class="topics">by {{post.get_topics}}</section>
+  <section class="topics">
+  Tagged Topics :
+  <!--post is the queryset (result) and we need topics for the result -->
+  {% for topics in post.topics.all %}
+    <td><a href="/topics/{{ topics.slug }}/"> {{ topics.name }} {% if not forloop.last %}, {% endif %} </a></td>
+  {% endfor %}
+  </section>
   <section class="content">{{ post.content|linebreaks }}</section>
 </article>
 {% endblock %}

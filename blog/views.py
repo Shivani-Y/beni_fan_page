@@ -53,6 +53,10 @@ class PostListView(ListView):
     context_object_name = 'posts'
     queryset = models.Post.objects.published().order_by('-published')
 
+    # pylint: disable=undefined-variable
+
+
+
 class PostDetailView(DetailView):
     model = models.Post
     context_object_name = 'post'
@@ -70,6 +74,7 @@ class PostDetailView(DetailView):
             published__month=self.kwargs['month'],
             published__day=self.kwargs['day'],
         )
+
 
 class TopicsListView(ListView):
     model = models.Topic
