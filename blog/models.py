@@ -85,7 +85,7 @@ class Post(models.Model):
     PUBLISHED = 'published'
     STATUS_CHOICES = [(DRAFT, 'Draft'), (PUBLISHED, 'Published')]
     title = models.CharField(max_length=255)
-    content = models.RichTextUploadingField()
+    content = RichTextUploadingField()
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each savenote
     author = models.ForeignKey(
