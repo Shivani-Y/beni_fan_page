@@ -18,6 +18,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from blog import views   # Import the views module
+from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,4 +51,5 @@ urlpatterns = [
     path('photo_contest/', views.Photo_ContestFormView.as_view(), name='photo_contest'),
     path('contact/', views.ContactFormView.as_view(), name='contact'),
     path('terms/', views.terms_and_conditions, name='terms-and-conditions'),
+    path('ckeditor/', include('ckeditor_uploader.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
