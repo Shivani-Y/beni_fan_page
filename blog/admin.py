@@ -74,10 +74,47 @@ class TopicAdmin(admin.ModelAdmin):
     )
     prepopulated_fields = {'slug': ('name',)}
 
+class ContactAdmin(admin.ModelAdmin):
+    list_display = (
+        'email',
+        'last_name',
+        'first_name',
+        'submitted'
+    )
+    # Make these fields read-only in the admin
+    readonly_fields = (
+        'first_name',
+        'last_name',
+        'email',
+        'message',
+        'submitted'
+    )
 
+class Photo_ContestAdmin(admin.ModelAdmin):
+    list_display = (
+        'email',
+        'last_name',
+        'first_name',
+        'photo_submitted'
+    )
+    # Make these fields read-only in the admin
+    readonly_fields = (
+        'first_name',
+        'last_name',
+        'email',
+        'image',
+        'photo_submitted'
+    )
+    list_filter = (
+        'photo_submitted',
+    )
+class HomeAdmin(admin.ModelAdmin):
+    display = 'home_image'
 # Register the `Post` model
 admin.site.register(models.Post, PostAdmin)
 # Register the `Comment` model
 admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.Topic, TopicAdmin)
-#admin.site.register(models.Comment, CommentInline)
+admin.site.register(models.Contact, ContactAdmin)
+admin.site.register(models.Photo_Contest, Photo_ContestAdmin)
+admin.site.register(models.Home, HomeAdmin)

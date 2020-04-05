@@ -1,0 +1,19 @@
+{# blog/templates/blog/photo_contest_form.html #}
+
+{% extends "blog/base.html" %}
+
+{% block page_title %}Photo Contest{% endblock %}
+
+
+{% block main %}
+<h1>Welcome!</h1>
+<h2>We are having a contest. To participate submit a ornangutan picture that you love</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <button type="submit">Submit</button>
+
+</form>
+{% endblock %}

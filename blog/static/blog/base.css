@@ -12,7 +12,14 @@ body {
   min-height: 100%;  /* Full height */
   padding: 1rem;
 }
-
+body .wrapper {
+  display: grid;  /* Use CSS grid */
+  grid-template-rows: auto auto 1fr auto;  /* Sticky footer */
+  margin: 0 auto;  /* Centers the page */
+  min-height: 100%;  /* Full height */
+  max-width: 1000px;  /* Set max width */
+  padding: 1rem;
+}
 /*
  * Style the <a> tags. Have a consistent colour for both visited
  * and unvisited links. Show underline on hover only.
@@ -76,7 +83,22 @@ a:hover {
   margin: 2rem 0;
 }
 /* ... */
+/* Messages */
+.django-messages {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0;
+  list-style: none;
+}
 
+.django-messages div {
+  padding: 1rem;
+}
+
+.django-messages .success {
+  background: #bdfcb3;
+  color: #355430;
+}
 /* Post preview */
 .post-preview {
   border-bottom: 1px #eee solid;

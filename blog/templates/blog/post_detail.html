@@ -13,6 +13,9 @@
   {% for topics in post.topics.all %}
     <td><a href="/topics/{{ topics.slug }}/"> {{ topics.name }} {% if not forloop.last %}, {% endif %} </a></td>
   {% endfor %}
+  {% if post.banner %}
+    <img src="{{ post.banner.url }}" width="100%" alt="Banner image">
+  {% endif %}
   </section>
   <section class="content">{{ post.content|linebreaks }}</section>
 </article>

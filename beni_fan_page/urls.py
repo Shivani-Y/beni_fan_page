@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 from blog import views   # Import the views module
 
 urlpatterns = [
@@ -46,6 +47,7 @@ urlpatterns = [
         views.TopicsDetailView.as_view(),
         name='topics-detail',
     ),
-    path('contact/', views.ContactView.as_view(), name='contact'),
+    path('photo_contest/', views.Photo_ContestFormView.as_view(), name='photo_contest'),
+    path('contact/', views.ContactFormView.as_view(), name='contact'),
     path('terms/', views.terms_and_conditions, name='terms-and-conditions'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

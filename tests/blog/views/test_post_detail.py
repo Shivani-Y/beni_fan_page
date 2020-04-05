@@ -1,3 +1,4 @@
+from blog.models import Post
 from model_mommy import mommy
 import pytest
 

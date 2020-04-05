@@ -5,6 +5,13 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.db.models import Count
 # Create your models here.
+# pylint: disable=no-member
+class Home(models.Model):
+    home_image = models.ImageField(
+        blank=True,
+        null=True,
+        help_text='A banner image for the Home'
+    )
 
 class TopicQuerySet(models.QuerySet):
     """query set for topic object"""
@@ -106,6 +113,11 @@ class Post(models.Model):
         Topic,
         related_name='blog_posts'
     )
+    banner = models.ImageField(
+        blank=True,
+        null=True,
+        help_text='A banner image for the post'
+    )
     objects = PostQuerySet.as_manager()
 
     def get_absolute_url(self):
@@ -154,3 +166,33 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
+
+class Contact(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    message = models.TextField()
+    submitted = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-submitted']
+
+    def __str__(self):
+        return f'{self.submitted.date()}: {self.email}'
+
+class Photo_Contest(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    image = models.ImageField(
+        blank=True,
+        null=True,
+        help_text='Upload your image here'
+    )
+    photo_submitted = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-photo_submitted']
+
+    def __str__(self):
+        return f'{self.photo_submitted.date()}: {self.email}'

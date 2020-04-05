@@ -5,8 +5,10 @@ from django.contrib.auth import get_user_model
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic import DetailView, CreateView, FormView, ListView
 from django.views import View
-from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.contrib import messages
 from . import models
 
 # pylint: disable=no-member
@@ -20,14 +22,15 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         # Get the parent context
         context = super().get_context_data(**kwargs)
-
         # Get last 3 posts
         latest_posts = models.Post.objects.published().order_by('-published')[:3]
         get_posts = models.Post.objects.return_10_post_with_the_most_comments()[:10]
+        get_image = models.Home.objects.values('home_image')
 # Update the context with our context variables
         context.update({
             'latest_posts': latest_posts,
             'get_posts': get_posts,
+            'get_image': get_image,
         })
         #render(request, 'blog/home.html', {'message': 'Hello world!'})
         #return render(request, 'blog/home.html', {'message': 'Get to know Beni!'})
@@ -55,8 +58,6 @@ class PostListView(ListView):
 
     # pylint: disable=undefined-variable
 
-
-
 class PostDetailView(DetailView):
     model = models.Post
     context_object_name = 'post'
@@ -75,7 +76,6 @@ class PostDetailView(DetailView):
             published__day=self.kwargs['day'],
         )
 
-
 class TopicsListView(ListView):
     model = models.Topic
     context_object_name = 'all_topics'
@@ -88,3 +88,49 @@ class TopicsDetailView(DetailView):
         context = super(TopicsDetailView, self).get_context_data(**kwargs)
         context['post_list'] = models.Post.objects.filter(topics=self.get_object()).published()
         return context
+
+class ContactFormView(CreateView):
+    model = models.Contact
+    success_url = reverse_lazy('home')
+    fields = [
+        'first_name',
+        'last_name',
+        'email',
+        'message',
+    ]
+
+    def form_valid(self, form):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Thank you! Your message has been sent.'
+        )
+        return super().form_valid(form)
+
+class Photo_ContestFormView(CreateView):
+    model = models.Photo_Contest
+    success_url = reverse_lazy('home')
+    fields = [
+        'first_name',
+        'last_name',
+        'email',
+        'image',
+    ]
+
+    def upload_pic(self, request):
+        if request.method == 'POST':
+            form = photo_contest_form(request.POST, request.FILES)
+            if form.is_valid():
+                m = photo_contest.objects.get(pk=course_id)
+                m.model_pic = form.cleaned_data['image']
+                m.save()
+                return HttpResponse('image upload success')
+        return HttpResponseForbidden('allowed only via POST')
+
+    def form_valid(self, form):
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Thank you! Your image has been submitted.'
+        )
+        return super().form_valid(form)

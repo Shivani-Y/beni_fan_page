@@ -24,7 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'rs$6v!d0mp67ptj_0+62qsi5q0&4_g#tp#4!r2juncmhfh5qc+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Read the DEBUG environment variable. Default to "1" for True.
+DEBUG = int(os.environ.get('DEBUG', '1'))
 
 ALLOWED_HOSTS = ['*']
 
@@ -116,7 +117,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+AWS_LOCATION = 'un41jyp11gdk/public/'
+AWS_STORAGE_BUCKET_NAME = 'https://cloud-cube.s3.amazonaws.com/un41jyp11gdk'
+
+AWS_ACCESS_KEY_ID = os.environ.get('CLOUDCUBE_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('CLOUDCUBE_SECRET_ACCESS_KEY')
+
+# Use cloud storage if credentials are set
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
