@@ -6,9 +6,7 @@
 
 <p>Welcome to the world of Beni the ornangutan and his friends at the
   Borneo Orangutan Survival Foundation in Borneo.</p>
-{% if home.home_image %}
-  <img src="{{ get_image.url }}" width="100%" alt="Home image">
-{% endif %}
+
   <section class="latest-article-preview">
     {% for post in latest_posts %}
     {% include "blog/post_preview.html" %}

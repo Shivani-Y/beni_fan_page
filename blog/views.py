@@ -25,12 +25,11 @@ class HomeView(TemplateView):
         # Get last 3 posts
         latest_posts = models.Post.objects.published().order_by('-published')[:3]
         get_posts = models.Post.objects.return_10_post_with_the_most_comments()[:10]
-        get_image = models.Home.objects.values('home_image')
+
 # Update the context with our context variables
         context.update({
             'latest_posts': latest_posts,
             'get_posts': get_posts,
-            'get_image': get_image,
         })
         #render(request, 'blog/home.html', {'message': 'Hello world!'})
         #return render(request, 'blog/home.html', {'message': 'Get to know Beni!'})

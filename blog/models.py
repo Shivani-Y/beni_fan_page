@@ -4,14 +4,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.db.models import Count
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 # pylint: disable=no-member
-class Home(models.Model):
-    home_image = models.ImageField(
-        blank=True,
-        null=True,
-        help_text='A banner image for the Home'
-    )
 
 class TopicQuerySet(models.QuerySet):
     """query set for topic object"""

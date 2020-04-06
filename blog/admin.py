@@ -108,8 +108,7 @@ class Photo_ContestAdmin(admin.ModelAdmin):
     list_filter = (
         'photo_submitted',
     )
-class HomeAdmin(admin.ModelAdmin):
-    display = 'home_image'
+
 # Register the `Post` model
 admin.site.register(models.Post, PostAdmin)
 # Register the `Comment` model
@@ -117,4 +116,3 @@ admin.site.register(models.Comment, CommentAdmin)
 admin.site.register(models.Topic, TopicAdmin)
 admin.site.register(models.Contact, ContactAdmin)
 admin.site.register(models.Photo_Contest, Photo_ContestAdmin)
-admin.site.register(models.Home, HomeAdmin)
