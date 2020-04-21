@@ -85,8 +85,10 @@ def question_9_create_a_comment(post):
     """
     Create and return a comment for the post object provided.
     """
-    result = Post.objects.get(pk=post).create()
-    return result
+    create = Comment.objects.create(blog_posts=post)
+    #result = Post.objects.filter(pk=post).
+    #result = result1
+    return create
 
 def question_10_set_approved_to_false(comment):
     """

@@ -19,4 +19,25 @@
   </section>
   <section class="content">{{ post.content|linebreaks|safe }}</section>
 </article>
+<section class="comments">
+  {% if comments %}
+    <h3>Latest comments</h3>
+    {% for comment in comments %}
+      <div class="comment">
+
+        <span class="by-line">By {{ comment.name }} | <time>{{ comment.created }}</time></span>
+        {{ comment.text|linebreaks }}
+        <td><button type="submit"><a  href="../../../../../api/comments/{{ comment.pk }}/like" target="_blank">
+          Like</a></button></td> {{ comment.likes }}      |
+         <td><button type="submit"><a  href="../../../../../api/comments/{{ comment.pk }}/dislike" target="_blank">Disike</a></button></td> {{ comment.dislikes }}
+      </div>
+    {% endfor %}
+  {% endif %}
+<iframe name="Iframe" style="display:none"></iframe>
+  <h3>Leave a comment</h3>
+  {# Alias the variable for the included template #}
+  {% with form=comment_form %}
+    {% include "blog/comment_form.html" %}
+  {% endwith %}
+</section>
 {% endblock %}

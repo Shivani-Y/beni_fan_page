@@ -1,3 +1,4 @@
+
 """beni_fan_page URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -21,9 +22,12 @@ from blog import views   # Import the views module
 from django.urls import include, path
 
 urlpatterns = [
+    path('api/', include('api.urls')),
+    path('posts/', views.PostListView.as_view(), name='post-list'),
     path('admin/', admin.site.urls),
     path('', views.HomeView.as_view(), name='home'),  # Set root to home view
     path('about/', views.AboutView.as_view(), name='about'),
+
     path(
         'posts/<int:year>/<int:month>/<int:day>/<slug:slug>/',
         views.PostDetailView.as_view(),
@@ -34,7 +38,6 @@ urlpatterns = [
         views.PostDetailView.as_view(),
         name='post-detail'
     ),
-    path('posts/', views.PostListView.as_view(), name='post-list'),
     path('posts/', views.PostsView.as_view(), name='posts'),
     path('topics/', views.TopicsListView.as_view(), name='topic-list'),
     path('topics/', views.TopicsView.as_view(), name='topics'),

@@ -79,5 +79,10 @@
   </footer>
   {# close wrapper for massages#}
    </div>
+   <script src="{% static "blog/comments.js" %}"></script>
+   {% block js %}
+     <script src="{% static "blog/csrf.js" %}"></script>
+     <script src="{% static "blog/comments.js" %}"></script>
+   {% endblock %}
 </body>
 </html>

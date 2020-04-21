@@ -3,7 +3,7 @@ from django.conf import settings  # Imports Django's loaded settings
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.db.models import Count
+from django.db.models import Count, F
 from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 # pylint: disable=no-member
@@ -150,9 +150,11 @@ class Comment(models.Model):
     name = models.CharField(max_length=255, null=False)
     email = models.EmailField(max_length=254, null=False)
     text = models.CharField(max_length=255, null=False)
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)  # Sets on create
     updated = models.DateTimeField(auto_now=True)  # Updates on each save
+    likes = models.PositiveIntegerField(default=0)
+    dislikes = models.PositiveIntegerField(default=0)
     objects = CommentQuerySet.as_manager()
 
     class Meta:

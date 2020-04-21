@@ -8,7 +8,9 @@ from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView, FormView, ListView
 from django.views import View
 from django.urls import reverse_lazy
+from django import forms
 from django.contrib import messages
+from . import forms
 from . import models
 
 # pylint: disable=no-member
@@ -74,6 +76,19 @@ class PostDetailView(DetailView):
             published__month=self.kwargs['month'],
             published__day=self.kwargs['day'],
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the post object
+        post = self.get_object()
+        # Set the post field on the form
+        comment_form = forms.CommentForm(initial={'post': post})
+        comments = models.Comment.objects.filter(post=post).filter(approved=True)
+
+        context['comment_form'] = comment_form
+        context['comments'] = comments.order_by('-created')
+
+        return context
 
 class TopicsListView(ListView):
     model = models.Topic
