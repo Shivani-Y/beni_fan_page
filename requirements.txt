@@ -9,4 +9,4 @@ Pillow==7.1.1
 boto3==1.12.36
 django-storages==1.9.1
 django-ckeditor==5.9.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
